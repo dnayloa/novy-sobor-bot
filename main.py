@@ -1,8 +1,8 @@
 import discord
 import os
-from osrs_api import GrandExchange
-from osrs_api import Item
+
 from osrsquery import OSRSQuery
+from decouple import config
 
 client = discord.Client()
 osrs_query = OSRSQuery()
@@ -23,6 +23,6 @@ async def on_message(message):
     if message.content.startswith('/ge_trend'):
         await message.channel.send(osrs_query.grand_enchange_price(message.content))
 
-client.run(os.getenv('TOKEN'))
+client.run(config('TOKEN'))
 
 
