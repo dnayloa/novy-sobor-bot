@@ -1,7 +1,12 @@
 import discord
 import os
+from osrs_api import GrandExchange
+from osrs_api import Item
+from osrsquery import OSRSQuery
 
 client = discord.Client()
+osrs_query = OSRSQuery()
+
 
 @client.event
 async def on_ready():
@@ -12,8 +17,12 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    if message.content.startswith('/ge'):
-        await message.channel.send('We cannot search the GE yet, function pending...')
+    if message.content.startswith('/ge_price'):
+        await message.channel.send(osrs_query.grand_enchange_price(message.content))
+
+    if message.content.startswith('/ge_trend'):
+        await message.channel.send(osrs_query.grand_enchange_price(message.content))
 
 client.run(os.getenv('TOKEN'))
+
 
