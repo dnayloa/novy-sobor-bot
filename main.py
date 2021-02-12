@@ -12,9 +12,8 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+    if message.content.startswith('/ge'):
+        await message.channel.send('We cannot search the GE yet, function pending...')
 
-#client.run(os.getenv('TOKEN'))
-print(os.getenv('TOKEN'))
+client.run(os.getenv('TOKEN'))
 
