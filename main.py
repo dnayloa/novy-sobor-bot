@@ -17,11 +17,12 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    if message.content.startswith('/ge_price'):
-        await message.channel.send(osrs_query.grand_enchange_price(message.content))
+    if message.content.startswith('/ge'):
+        item_name = message.content[4:]
+        await message.channel.send(embed=osrs_query.item_value(item_name))
 
-    if message.content.startswith('/ge_trend'):
-        await message.channel.send(osrs_query.grand_enchange_price(message.content))
+    # if message.content.startswith('/ge_trend'):
+    #     await message.channel.send(osrs_query.grand_enchange_price(message.content))
 
 client.run(config('TOKEN'))
 

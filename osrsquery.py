@@ -1,18 +1,26 @@
-from osrs_api import GrandExchange
-from osrs_api import Item
+from osrsbox import items_api
+from GrandExchange import GrandExchange
+import pprint as pp
+import discord
+
 
 class OSRSQuery:
 
-    def grand_enchange_price(self, msg):
-        item_name = msg[10:]
-        item_id = Item.get_ids(item_name)
-        item = GrandExchange.item(item_id)
-        return "Item: "+ item_name + " is " + str("{:,.2f}".format(item.price())) + " gp"
+    def __init__ (self):
+        self.all_db_items = items_api.load()
+        self.exchange = GrandExchange.Exchange()
 
-    def grand_enchange_trend(self, msg):
-        query = msg[10:]
-        time = query.split()[0]
-        item_name = ""
-        item_id = Item.get_ids(item_name)
-        item = GrandExchange.item(item_id)
-        return "Item: "+ item_name + " is " + str("{:,.2f}".format(item.price())) + " gp"
+    def item_value(self, name):
+        try:
+            item = self.all_db_items.lookup_by_item_name(name)
+            embed = discord.Embed(title = item.name, url = item.wiki_url, color = discord.Color.blue())
+            embed.add_field(name = "Sell Average: ", value = "{:,} gp".format(self.exchange.get_item(item.name).overall_average, inline=False))
+            embed.add_field(name = "Buy Average: ", value = "{:,} gp".format(self.exchange.get_item(item.name).buy_average), inline=False)
+            embed.add_field(name = "High Alc: ", value = "{:,}".format(item.highalch), inline=False)
+            embed.add_field(name = "Low Alc: ", value = "{:,}".format(item.lowalch), inline=False)
+        except(ValueError):
+            embed = discord.Embed(title = "Error !", color = discord.Color.red(), description = "Cannot find the provided item name...)")
+        return embed
+
+osrsquery = OSRSQuery()
+
