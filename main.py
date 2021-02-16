@@ -1,5 +1,7 @@
 import discord
 import os
+import requests
+import json
 from discord.ext import commands
 
 from osrsquery import OSRSQuery
@@ -26,8 +28,16 @@ async def on_message(message):
 async def _ge(ctx, arg):
     await ctx.send(embed=osrs.item_value(arg))
 
-    # if message.content.startswith('/ge_trend'):
-    #     await message.channel.send(osrs_query.grand_enchange_price(message.content))
+@bot.command(name='qod')
+async def _ge(ctx, arg = ""):
+    msg = ""
+    try:
+        qod = requests.get('https://quotes.rest/qod?language=en').text
+        msg = str(qod.contents.quotes)
+    except requests.exceptions.RequestException as e:  # This is the correct syntax
+        msg = str(e)
+
+    await ctx.send(msg)
 
 bot.run(config('TOKEN'))
 
