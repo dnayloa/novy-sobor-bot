@@ -25,11 +25,12 @@ async def on_message(message):
 
 
 @bot.command(name='ge')
-async def _ge(ctx, arg):
-    await ctx.send(embed=osrs.item_value(arg))
+async def _ge(ctx, *args):
+    item = " ".join(list(args))                         #convert list of args into searchable item name
+    await ctx.send(embed = osrs.item_value(item))
 
 @bot.command(name='qod')
-async def _ge(ctx, arg = ""):
+async def _qod(ctx, arg = ""):
     msg = ""
     try:
         qod = requests.get('https://quotes.rest/qod?language=en').text
