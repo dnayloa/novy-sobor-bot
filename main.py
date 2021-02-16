@@ -17,7 +17,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    if message.content.startswith('/ge'):
+    if message.content.startswith('!ge'):
         item_name = message.content[4:]
         await message.channel.send(embed=osrs_query.item_value(item_name))
 
