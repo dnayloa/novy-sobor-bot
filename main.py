@@ -1,29 +1,34 @@
 import discord
 import os
+from discord.ext import commands
 
 from osrsquery import OSRSQuery
 from decouple import config
 
-client = discord.Client()
-osrs_query = OSRSQuery()
+bot = commands.Bot(command_prefix="!")
+# bot = discord.Client()
+
+osrs = OSRSQuery() 
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(bot))
 
-@client.event
+
+@bot.command()
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
-    
-    if message.content.startswith('!ge'):
-        item_name = message.content[4:]
-        await message.channel.send(embed=osrs_query.item_value(item_name))
+
+
+@bot.command(name='ge')
+async def _ge(ctx, arg):
+    await ctx.send(embed=osrs.item_value(arg))
 
     # if message.content.startswith('/ge_trend'):
     #     await message.channel.send(osrs_query.grand_enchange_price(message.content))
 
-client.run(config('TOKEN'))
+bot.run(config('TOKEN'))
 
 
